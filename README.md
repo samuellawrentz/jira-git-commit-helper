@@ -1,0 +1,2 @@
+# README
+Easy commit messages
