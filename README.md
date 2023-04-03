@@ -32,6 +32,17 @@ To activate the extension, open the command palette (Ctrl+Shift+P) and select "J
 - Select the type of commit you are making from the list of available commit types.
 - Enter a commit message and press Enter to create the commit.
 
+## Contributing
+
+If you wish to contribute to this extension, please follow the steps below:
+
+1. Fork the repository
+2. Clone your fork to your local machine
+3. Create a new branch for your changes
+4. Make your changes and commit them
+5. Push your branch to your fork
+6. Open a pull request
+
 ## License
 
 This extension is licensed under the [MIT License](LICENSE).
