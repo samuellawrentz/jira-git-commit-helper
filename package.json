@@ -3,6 +3,7 @@
   "displayName": "Git Commit Helper",
   "description": "This helps to create commit messages based on JIRA tickets assigned to you",
   "version": "0.0.1",
+  "repository": "https://github.com/samuellawrentz/jira-git-commit-helper",
   "engines": {
     "vscode": "^1.76.0"
   },

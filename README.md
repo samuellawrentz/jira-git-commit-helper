@@ -25,7 +25,7 @@ The extension will get the configuration when its first activated. If you change
 
 - `jiraCommitMessage.baseURL`: The URL of your JIRA instance, e.g. `https://mycompany.atlassian.net`.
 - `jiraCommitMessage.username`: The email/username to use for the JIRA API.
-- `jiraCommitMessage.token`: The password or API token to use for the JIRA API.
+- `jiraCommitMessage.token`: The API token to use for the JIRA API. You can generate one in your JIRA profile settings. (See [here](https://confluence.atlassian.com/cloud/api-tokens-938839638.html) for more information.)
 
 ## Usage
 
