@@ -1,7 +1,7 @@
 # JIRA Git Commit Message Extension for VS Code
 
 This VS Code extension automatically inserts the details of currently assigned JIRA tickets into Git commit messages, helping to ensure that necessary information is included and reducing errors.
-
+![Extension Preview](assets/extension.gif)
 ## Features
 
 - Automatically inserts JIRA ticket details into Git commit messages
