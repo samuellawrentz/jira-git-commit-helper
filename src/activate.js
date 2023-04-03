@@ -44,7 +44,7 @@ async function activate(context) {
     }
 
     // register a command to open the commit message editor
-    const commitMessageEditor = vscode.commands.registerCommand('git-commit-helper.createCommitMessage', async () => {
+    const commitMessageEditor = vscode.commands.registerCommand('jira-git-commit-helper.createCommitMessage', async () => {
         const secrets = await context.secrets.get(CONSTANTS.storageKeys.auth)
         if (!secrets) return vscode.window.showErrorMessage('No JIRA credentials found');
 
@@ -114,7 +114,7 @@ async function activate(context) {
         if (selectedTicket && selectedTicket.action === CONSTANTS.actions[1].action) {
             // refresh the jiraTickets list
             await issuesCache.flush();
-            return vscode.commands.executeCommand('git-commit-helper.createCommitMessage');
+            return vscode.commands.executeCommand('jira-git-commit-helper.createCommitMessage');
         }
 
         if (selectedTicket && selectedTicket.action == CONSTANTS.actions[0].action) {
@@ -150,7 +150,7 @@ async function activate(context) {
 
     context.subscriptions.push(commitMessageEditor);
 
-    let resetToken = vscode.commands.registerCommand('git-commit-helper.resetToken', async function () {
+    let resetToken = vscode.commands.registerCommand('jira-git-commit-helper.resetToken', async function () {
         await context.secrets.delete(CONSTANTS.storageKeys.auth)
         await context.secrets.delete(CONSTANTS.storageKeys.baseUrl)
         await issuesCache.flush()

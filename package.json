@@ -1,5 +1,5 @@
 {
-  "name": "git-commit-helper",
+  "name": "jira-git-commit-helper",
   "displayName": "Git Commit Helper",
   "description": "This helps to create commit messages based on JIRA tickets assigned to you",
   "version": "0.0.1",
@@ -14,16 +14,12 @@
   "contributes": {
     "commands": [
       {
-        "command": "git-commit-helper.helloWorld",
-        "title": "Hello World"
+        "command": "jira-git-commit-helper.createCommitMessage",
+        "title": "JIRA Commit Message: Create Commit Message"
       },
       {
-        "command": "git-commit-helper.createCommitMessage",
-        "title": "Create Commit Message"
-      },
-      {
-        "command": "git-commit-helper.resetToken",
-        "title": "Reset Usernam & Token"
+        "command": "jira-git-commit-helper.resetToken",
+        "title": "JIRA Commit Message: Reset Username & Token"
       }
     ]
   },
