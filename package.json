@@ -3,10 +3,25 @@
   "displayName": "JIRA Git Commit Helper",
   "description": "This helps to create commit messages based on JIRA tickets assigned to you",
   "version": "0.0.1",
+  "publisher": "SamuelLawrentz",
   "repository": {
     "type": "git",
     "url": "https://github.com/samuellawrentz/jira-git-commit-helper"
   },
+  "icon": "assets/icon.png",
+  "keywords": [
+    "jira",
+    "git",
+    "commit-message",
+    "helper",
+    "jira-git",
+    "git-commit-message",
+    "commit",
+    "prefix",
+    "template",
+    "scm",
+    "harmonization"
+  ],
   "engines": {
     "vscode": "^1.76.0"
   },
