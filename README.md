@@ -15,7 +15,7 @@ This VS Code extension automatically inserts the details of currently assigned J
 
 ## Installation
 
-Install the extension from the VS Code marketplace by searching for "JIRA Commit Message" or by following [this link](https://marketplace.visualstudio.com/items?itemName=jira-commit-message.jira-commit-message).
+Install the extension from the VS Code marketplace by searching for "JIRA Commit Message" or by following [this link](https://marketplace.visualstudio.com/items?itemName=SamuelLawrentz.jira-git-commit-helper).
 
 ## Configuration
 
@@ -49,4 +49,4 @@ If you wish to contribute to this extension, please follow the steps below:
 
 ## License
 
-This extension is licensed under the [MIT License](LICENSE).
+This extension is licensed under the [MIT License](./license.md).
