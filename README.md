@@ -3,7 +3,7 @@
 This VS Code extension automatically inserts the details of currently assigned JIRA tickets into Git commit messages, helping to ensure that necessary information is included and reducing errors.
 
 <p align="center">
-  ![Extension Preview](assets/extension.gif)
+  <img width="100%" src="assets/extension.gif">
 </p>
 
 ## Features
