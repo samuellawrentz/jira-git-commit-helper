@@ -3,10 +3,10 @@ const CONSTANTS = {
         { label: '$(add) Enter ticket number manually', action: 'enter-manually' },
         { label: '$(refresh) Fetch latest tickets', action: 'refresh' },
     ],
-    types: ['🐞 Bug Fix', '⏫ Updates', '🔧 Optimization', '🧹 Clean up'],
-    url: (baseURL) => `${baseURL}/rest/api/3/search/?jql=updated >= -20d AND project = CNTO AND assignee in (currentUser()) order by updated DESC&maxResults=15`,
+    types: ['🐞 Bug Fix', '⏫ Updates', '🔧 Optimization', '🧹 Clean up', '📋 Chore', '⚪ Temp', '📒 Documentation', '🔂 Revert'],
+    url: (baseURL) => `${baseURL.replace(/\/$/, '')}/rest/api/3/search/?jql=updated >= -20d AND project = CNTO AND assignee in (currentUser()) order by updated DESC&maxResults=15`,
     strings: {
-        usernamePlaceholder: 'Enter your JIRA username/email',
+        usernamePlaceholder: 'Enter your JIRA email (eg: your-name@your-company.com)',
         tokenPlaceholder: 'Enter your JIRA API token',
         ticketPlaceholder: 'Select the ticket',
         manualTicketPlaceholder: 'Enter ticket number manually (e.g. CNTO-1234)',

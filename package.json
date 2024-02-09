@@ -2,7 +2,7 @@
   "name": "jira-git-commit-helper",
   "displayName": "JIRA Git Commit Helper",
   "description": "This helps to create commit messages based on JIRA tickets assigned to you",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "publisher": "SamuelLawrentz",
   "repository": {
     "type": "git",
@@ -38,7 +38,11 @@
       },
       {
         "command": "jira-git-commit-helper.resetToken",
-        "title": "JIRA Commit Message: Reset Username & Token"
+        "title": "JIRA Commit Message: Clear Stored data"
+      },
+      {
+        "command": "jira-git-commit-helper.setUserDetails",
+        "title": "JIRA Commit Message: Enter User Details for the JIRA API"
       }
     ]
   },

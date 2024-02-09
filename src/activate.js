@@ -6,47 +6,54 @@ const vscode = require('vscode');
 const Cache = require('vscode-cache');
 const { recentlySelectedSeperator, TicktetSeparator, CONSTANTS } = require('./constants');
 
+
 /**
  * @param {vscode.ExtensionContext} context
  */
 async function activate(context) {
-    const secrets = await context.secrets.get(CONSTANTS.storageKeys.auth)
     let issuesCache = new Cache(context);
 
-    // check if auth is already stored in the secrets
-    // if not, prompt for username and password
-    if (!secrets) {
+    const setDetails = vscode.commands.registerCommand('jira-git-commit-helper.setUserDetails', async () => {
+        const secrets = await context.secrets.get(CONSTANTS.storageKeys.auth)
+            // check if auth is already stored in the secrets
+            // if not, prompt for username and password
+            if (!secrets) {
 
-        //get password from username and password
-        const username = await vscode.window.showInputBox({
-            placeHolder: CONSTANTS.strings.usernamePlaceholder,
-            ignoreFocusOut: true,
-        });
-        const password = await vscode.window.showInputBox({
-            placeHolder: CONSTANTS.strings.tokenPlaceholder,
-            password: true,
-            ignoreFocusOut: true,
-        });
-        if (!username || !password) return;
+                //get password from username and password
+                const username = await vscode.window.showInputBox({
+                    placeHolder: CONSTANTS.strings.usernamePlaceholder,
+                    ignoreFocusOut: true,
+                });
+                const password = await vscode.window.showInputBox({
+                    placeHolder: CONSTANTS.strings.tokenPlaceholder,
+                    password: true,
+                    ignoreFocusOut: true,
+                });
+                if (!username || !password) return vscode.window.showInformationMessage('Username and Token are required.');
 
 
-        // store the auth in the secrets as base64 encoded string
-        const auth = Buffer.from(`${username}:${password}`).toString('base64');
-        await context.secrets.store(CONSTANTS.storageKeys.auth, auth);
+                // store the auth in the secrets as base64 encoded string
+                const auth = Buffer.from(`${username}:${password}`).toString('base64');
+                await context.secrets.store(CONSTANTS.storageKeys.auth, auth);
 
-        // get the base url from the user
-        const baseUrl = await vscode.window.showInputBox({
-            placeHolder: CONSTANTS.strings.baseUrlPlaceholder,
-            ignoreFocusOut: true,
-        });
-        if (!baseUrl) return;
-        await context.secrets.store(CONSTANTS.storageKeys.baseUrl, baseUrl);
-    }
-
+                // get the base url from the user
+                const baseUrl = await vscode.window.showInputBox({
+                    placeHolder: CONSTANTS.strings.baseUrlPlaceholder,
+                    ignoreFocusOut: true,
+                });
+                if (!baseUrl) return;
+                await context.secrets.store(CONSTANTS.storageKeys.baseUrl, baseUrl);
+            } else vscode.window.showInformationMessage('Data already present, please run "JIRA Commit Message: Clear Stored data" to clear.');
+        })
+    context.subscriptions.push(setDetails);
     // register a command to open the commit message editor
     const commitMessageEditor = vscode.commands.registerCommand('jira-git-commit-helper.createCommitMessage', async () => {
         const secrets = await context.secrets.get(CONSTANTS.storageKeys.auth)
-        if (!secrets) return vscode.window.showErrorMessage('No JIRA credentials found');
+        if (!secrets) {
+            vscode.window.showErrorMessage('No JIRA credentials found')
+            vscode.commands.executeCommand('jira-git-commit-helper.setUserDetails')
+            return 
+        }
 
         // check if git extension is installed and enabled
         const vscodeGit = vscode.extensions.getExtension('vscode.git');
@@ -86,6 +93,9 @@ async function activate(context) {
                 console.log(e);
             }
         });
+        if(!Array.isArray(jiraTickets)) 
+            return vscode.window.showErrorMessage('Not able to find valid tickets. Use reset command to reset your information and try again.');
+
         // Store jira tickets in cache and set expiration to 30 mins in seconds
         await issuesCache.put(CONSTANTS.storageKeys.tickets, jiraTickets, 1800);
 
@@ -159,6 +169,9 @@ async function activate(context) {
     });
 
     context.subscriptions.push(resetToken);
+
+    if (!secrets)
+        vscode.commands.executeCommand('jira-git-commit-helper.setUserDetails')
 }
 
 module.exports = activate
