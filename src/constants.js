@@ -4,7 +4,7 @@ const CONSTANTS = {
         { label: '$(refresh) Fetch latest tickets', action: 'refresh' },
     ],
     types: ['🐞 Bug Fix', '⏫ Updates', '🔧 Optimization', '🧹 Clean up', '📋 Chore', '⚪ Temp', '📒 Documentation', '🔂 Revert'],
-    url: (baseURL) => `${baseURL.replace(/\/$/, '')}/rest/api/3/search/?jql=updated >= -20d AND project = CNTO AND assignee in (currentUser()) order by updated DESC&maxResults=15`,
+    url: (baseURL) => `${baseURL.replace(/\/$/, '')}/rest/api/3/search/?jql=updated >= -20d AND assignee in (currentUser()) order by updated DESC&maxResults=15`,
     strings: {
         usernamePlaceholder: 'Enter your JIRA email (eg: your-name@your-company.com)',
         tokenPlaceholder: 'Enter your JIRA API token',
