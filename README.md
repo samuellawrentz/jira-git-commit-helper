@@ -62,6 +62,10 @@ To activate the extension, open the command palette (Ctrl+Shift+P) and select "J
 
 > Note: This extension does not store any of your data locally. It is stored within VSCode Extension Cache and hence you can never access the username, token or URL directly. It can be set and unset only via the available commands.
 
+## Additional information
+Please have a look at this blog post for more clarity - https://samuellawrentz.com/blog/jira-git-commit-workflow-vscode-extension/
+
+
 ## Contributing
 
 If you wish to contribute to this extension, please follow the steps below:
