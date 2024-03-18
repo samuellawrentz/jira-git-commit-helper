@@ -5,6 +5,7 @@ const { default: axios } = require('axios');
 const vscode = require('vscode');
 const Cache = require('vscode-cache');
 const { recentlySelectedSeperator, TicktetSeparator, CONSTANTS } = require('./constants');
+const { getCommitMessageString } = require('./utils');
 
 
 /**
@@ -15,36 +16,36 @@ async function activate(context) {
 
     const setDetails = vscode.commands.registerCommand('jira-git-commit-helper.setUserDetails', async () => {
         const secrets = await context.secrets.get(CONSTANTS.storageKeys.auth)
-            // check if auth is already stored in the secrets
-            // if not, prompt for username and password
-            if (!secrets) {
+        // check if auth is already stored in the secrets
+        // if not, prompt for username and password
+        if (!secrets) {
 
-                //get password from username and password
-                const username = await vscode.window.showInputBox({
-                    placeHolder: CONSTANTS.strings.usernamePlaceholder,
-                    ignoreFocusOut: true,
-                });
-                const password = await vscode.window.showInputBox({
-                    placeHolder: CONSTANTS.strings.tokenPlaceholder,
-                    password: true,
-                    ignoreFocusOut: true,
-                });
-                if (!username || !password) return vscode.window.showInformationMessage('Username and Token are required.');
+            //get password from username and password
+            const username = await vscode.window.showInputBox({
+                placeHolder: CONSTANTS.strings.usernamePlaceholder,
+                ignoreFocusOut: true,
+            });
+            const password = await vscode.window.showInputBox({
+                placeHolder: CONSTANTS.strings.tokenPlaceholder,
+                password: true,
+                ignoreFocusOut: true,
+            });
+            if (!username || !password) return vscode.window.showInformationMessage('Username and Token are required.');
 
 
-                // store the auth in the secrets as base64 encoded string
-                const auth = Buffer.from(`${username}:${password}`).toString('base64');
-                await context.secrets.store(CONSTANTS.storageKeys.auth, auth);
+            // store the auth in the secrets as base64 encoded string
+            const auth = Buffer.from(`${username}:${password}`).toString('base64');
+            await context.secrets.store(CONSTANTS.storageKeys.auth, auth);
 
-                // get the base url from the user
-                const baseUrl = await vscode.window.showInputBox({
-                    placeHolder: CONSTANTS.strings.baseUrlPlaceholder,
-                    ignoreFocusOut: true,
-                });
-                if (!baseUrl) return;
-                await context.secrets.store(CONSTANTS.storageKeys.baseUrl, baseUrl);
-            } else vscode.window.showInformationMessage('Data already present, please run "JIRA Commit Message: Clear Stored data" to clear.');
-        })
+            // get the base url from the user
+            const baseUrl = await vscode.window.showInputBox({
+                placeHolder: CONSTANTS.strings.baseUrlPlaceholder,
+                ignoreFocusOut: true,
+            });
+            if (!baseUrl) return;
+            await context.secrets.store(CONSTANTS.storageKeys.baseUrl, baseUrl);
+        } else vscode.window.showInformationMessage('Data already present, please run "JIRA Commit Message: Clear Stored data" to clear.');
+    })
     context.subscriptions.push(setDetails);
     // register a command to open the commit message editor
     const commitMessageEditor = vscode.commands.registerCommand('jira-git-commit-helper.createCommitMessage', async () => {
@@ -52,7 +53,7 @@ async function activate(context) {
         if (!secrets) {
             vscode.window.showErrorMessage('No JIRA credentials found')
             vscode.commands.executeCommand('jira-git-commit-helper.setUserDetails')
-            return 
+            return
         }
 
         // check if git extension is installed and enabled
@@ -75,8 +76,8 @@ async function activate(context) {
             try {
                 const cachedIssues = await issuesCache.get(CONSTANTS.storageKeys.tickets);
                 const baseUrl = await context.secrets.get(CONSTANTS.storageKeys.baseUrl);
-                if(!baseUrl) return vscode.window.showErrorMessage('No JIRA base URL found')
-                
+                if (!baseUrl) return vscode.window.showErrorMessage('No JIRA base URL found')
+
                 if (cachedIssues) return cachedIssues;
                 // get list of tickets assigned to current user from JIRA using axios
                 const { data: { issues } } = await axios.get(CONSTANTS.url(baseUrl), {
@@ -93,7 +94,7 @@ async function activate(context) {
                 console.log(e);
             }
         });
-        if(!Array.isArray(jiraTickets)) 
+        if (!Array.isArray(jiraTickets))
             return vscode.window.showErrorMessage('Not able to find valid tickets. Use reset command to reset your information and try again.');
 
         // Store jira tickets in cache and set expiration to 30 mins in seconds
@@ -155,7 +156,7 @@ async function activate(context) {
         // Store selected jira tickets in cache and set expiration to 3 days in seconds
         if (!selectedTicket.isManual)
             issuesCache.put(CONSTANTS.storageKeys.selectedIssues, [selectedTicket, ...recentlySelectedIssues].slice(0, 4), 3 * 24 * 60 * 60)
-        repos[0].inputBox.value = selectedTicket && selectedTicket.detail ? `(${selectedTicket.detail}) ${selectedType || ''}: ` : '';
+        repos[0].inputBox.value = selectedTicket && selectedTicket.detail ? getCommitMessageString(selectedTicket.detail, selectedType, selectedTicket.label) : '';
     });
 
     context.subscriptions.push(commitMessageEditor);
@@ -170,7 +171,8 @@ async function activate(context) {
 
     context.subscriptions.push(resetToken);
 
-    if (!secrets)
+    const auth = await context.secrets.get(CONSTANTS.storageKeys.auth)
+    if (!auth)
         vscode.commands.executeCommand('jira-git-commit-helper.setUserDetails')
 }
 

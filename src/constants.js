@@ -3,14 +3,27 @@ const CONSTANTS = {
         { label: '$(add) Enter ticket number manually', action: 'enter-manually' },
         { label: '$(refresh) Fetch latest tickets', action: 'refresh' },
     ],
-    types: ['🐞 Bug Fix', '⏫ Updates', '🔧 Optimization', '🧹 Clean up', '📋 Chore', '⚪ Temp', '📒 Documentation', '🔂 Revert'],
+    types: [
+        {
+            label: '$(copy) Use ticket summary as commit message',
+            action: 'copy-summary'
+        },
+        '🐞 Bug Fix',
+        '⏫ Updates',
+        '🔧 Optimization',
+        '🧹 Clean up',
+        '📋 Chore',
+        '⚪ Temp',
+        '📒 Documentation',
+        '🔂 Revert'
+    ],
     url: (baseURL) => `${baseURL.replace(/\/$/, '')}/rest/api/latest/search/?jql=updated >= -20d AND assignee in (currentUser()) order by updated DESC&maxResults=15`,
     strings: {
         usernamePlaceholder: 'Enter your JIRA email (eg: your-name@your-company.com)',
         tokenPlaceholder: 'Enter your JIRA API token',
         ticketPlaceholder: 'Select the ticket',
         manualTicketPlaceholder: 'Enter ticket number manually (e.g. CNTO-1234)',
-        typePlaceholder: 'Select type of the changes',
+        typePlaceholder: 'Select type of the changes (optional)',
         fetchingTickets: 'Fetching JIRA tickets...',
         baseUrlPlaceholder: 'Enter your JIRA base URL (e.g. https://company.atlassian.net)',
     },
